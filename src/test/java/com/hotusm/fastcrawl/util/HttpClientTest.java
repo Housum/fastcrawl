@@ -2,8 +2,12 @@ package com.hotusm.fastcrawl.util;
 
 import com.hotusm.fastcrawl.fetch.DownLoadPage;
 import com.hotusm.fastcrawl.fetch.DownLoadPageImpl;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,9 +47,36 @@ public class HttpClientTest {
 
         DownLoadPage page=new DownLoadPageImpl();
 
-       HttpReturnMessage message= page.fetchPage("http://www.baidu.com");
+       HttpReturnMessage message= page.fetchPage("http://www.cnblogs.com/zr520/p/4876162.html");
 
        System.out.println(message.getResult()+" "+message.getStatusCode());
-
     }
+
+    @Test
+    public void testGet() throws Exception{
+        DownLoadPage page=new DownLoadPageImpl();
+
+        HttpReturnMessage message= page.fetchPage("http://blog.csdn.net/yinwenjie/article/details/52757457");
+
+       // System.out.println(sb.toString());
+        //List<String> list= HtmlAnalysisUtil.selectText("#dale_book_subject_top_icon",sb.toString());
+
+        Document document= Jsoup.parse(message.getResult());
+
+       // Element element=document.getElementById("dale_book_subject_top_icon");
+
+        Elements elements= document.select("h1");
+
+        System.out.println(elements.get(0).text());
+
+       // System.out.println(list);
+    }
+
+    @Test
+    public void decode(){
+
+        String s=URLDecoder.decode("https://book.douban.com/javascript:%20void%200;");
+        System.out.print(s);
+    }
+
 }

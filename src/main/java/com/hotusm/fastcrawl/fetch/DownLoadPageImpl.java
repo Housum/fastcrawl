@@ -18,7 +18,7 @@ public class DownLoadPageImpl implements DownLoadPage {
 
     private static final Logger LOG= LogManager.getLogger(DownLoadPageImpl.class);
 
-    private static final String DOMAIN= ConfigUtil.getValue("domain");
+    private static final String DOMAIN= ConfigUtil.getValue("first.domain");
     private static final String HOST=ConfigUtil.getValue("host");
 
 

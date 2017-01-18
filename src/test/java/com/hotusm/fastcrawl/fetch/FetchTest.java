@@ -1,9 +1,6 @@
 package com.hotusm.fastcrawl.fetch;
 
-import com.hotusm.fastcrawl.common.container.DiscardData;
-import com.hotusm.fastcrawl.common.container.DiscardDataImpl;
-import com.hotusm.fastcrawl.common.container.PageData;
-import com.hotusm.fastcrawl.common.container.PageDataImpl;
+import com.hotusm.fastcrawl.common.container.*;
 import com.hotusm.fastcrawl.util.HttpReturnMessage;
 
 import java.io.FileOutputStream;

@@ -3,7 +3,7 @@
 <configuration status="WARN">
     <properties>
         <!-- 日志文件目录 -->
-        <property name="LOG_HOME">/data/logs</property>
+        <property name="LOG_HOME">C:/data/logs</property>
         <!-- 日志文件名 -->
         <property name="LOG_NAME_BIZ">crawl-biz</property>
         <property name="LOG_NAME_ERROR">crawl-error</property>
@@ -36,7 +36,7 @@
     </appenders>
 
     <loggers>
-        <logger name="com.hotusm.fastcrawl.fetch" level="INFO" ></logger>
+        <logger name="com.hotusm" level="DEBUG" ></logger>
         <root level="DEBUG" includeLocation="true">
             <appender-ref ref="Console"/>
             <appender-ref ref="BizFile"/>

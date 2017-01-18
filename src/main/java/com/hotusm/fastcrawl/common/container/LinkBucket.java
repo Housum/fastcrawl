@@ -1,4 +1,4 @@
-package com.hotusm.fastcrawl.fetch;
+package com.hotusm.fastcrawl.common.container;
 
 /**
  * 这里全部是待解析的超链接

@@ -3,7 +3,7 @@ package com.hotusm.fastcrawl.fetch;
 /**
  * A 标签
  */
-public final class ATag {
+public final class ATag implements Tag{
 
     private String href;
     private String name;

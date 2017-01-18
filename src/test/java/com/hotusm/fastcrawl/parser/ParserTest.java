@@ -1,26 +1,15 @@
 package com.hotusm.fastcrawl.parser;
 
-import com.hotusm.fastcrawl.util.ConfigUtil;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.URIException;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.junit.Test;
-
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
+import com.hotusm.fastcrawl.common.container.*;
+import com.hotusm.fastcrawl.fetch.ATag;
+import com.hotusm.fastcrawl.fetch.DelayAndRetryLoad;
+import com.hotusm.fastcrawl.fetch.DelayAndRetryLoadImpl;
 
 /**
  */
 public class ParserTest {
 
-    @Test
+    /*@Test
     public void testParser() throws Exception{
         FileInputStream fileInputStream=new FileInputStream("C:\\html\\httpsbookdoubancom.html");
         StringBuilder sb=new StringBuilder();
@@ -29,7 +18,7 @@ public class ParserTest {
             sb.append(new String(b,"UTF-8"));
         }
         Document doc = Jsoup.parse(sb.toString());
-        Elements elements=doc.select("a");
+       *//* Elements elements=doc.select("a");
         if(elements!=null&&elements.size()>0){
           //Element element= elements.get(0);
           //System.out.println(element.text());
@@ -40,7 +29,9 @@ public class ParserTest {
                   System.out.println(url);
               }
             }
-        }
+        }*//*
+
+      List<String> list=  HtmlAnalysisUtil.selectAttr("a","href",sb.toString());
     }
 
     //如果url是以/开头的 需要增加完整的名称 domain+url  如果不是以http或者https 开头又不是/开头 那么
@@ -96,13 +87,53 @@ public class ParserTest {
     }
 
     @Test
-    public void testChinses(){
+    public void testChinses() {
 
         System.out.println("11".matches("[\\u4e00-\\u9fa5]"));
         System.out.println("7868768你".matches("[\\u4e00-\\u9fa5]+"));
-        Pattern pattern=Pattern.compile("[\\u4e00-\\u9fa5]+");
+        Pattern pattern = Pattern.compile("[\\u4e00-\\u9fa5]+");
         System.out.println(pattern.matcher("7868768你").matches());
+    }
 
+
+    @Test
+    public void testParser1(){
+        final LinkBucket linkBucket= new QueueLinkBucket<ATag>();
+        final PageData pageData=new PageDataImpl();
+        final ParserWork parserWork=new TestParserWork();
+        ParsedData parsedData=new ATagParsedData();
+        new TestAbstractParser(pageData,parsedData,linkBucket,parserWork).load();
+    }
+*/
+    public static void main(String[] args) throws Exception{
+
+            final LinkBucket linkBucket= new QueueLinkBucket<ATag>();
+            final PageData pageData=new PageDataImpl();
+            final ParserWork parserWork=new TestParserWork();
+            final ParsedData parsedData=new ATagParsedData();
+            final DiscardData discardData=new DiscardDataImpl();
+            final ValidateTag validateTag=new ValidateATag();
+            final ParserWork aTagParserWork=new ATagParserWork(linkBucket,parsedData,validateTag);
+
+            linkBucket.push(new ATag("博客园","http://blog.csdn.net/yinwenjie"));
+            DelayAndRetryLoad load=new DelayAndRetryLoadImpl(linkBucket,pageData,discardData);
+            load.delayLoad();
+
+           TestAbstractParser parser= new TestAbstractParser();
+
+           parser.setaTagParserWork(aTagParserWork);
+           parser.setPageData(pageData);
+           parser.setPageParserWork(parserWork);
+
+           parser.load();
+
+            synchronized (ParserTest.class){
+            try{
+                ParserWork.class.wait();
+            }catch (Exception e){
+
+            }
+            }
     }
 
 }

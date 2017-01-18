@@ -5,7 +5,7 @@ import com.hotusm.fastcrawl.common.container.PageData;
 import com.hotusm.fastcrawl.fetch.ATag;
 import com.hotusm.fastcrawl.fetch.DownLoadPage;
 import com.hotusm.fastcrawl.fetch.DownLoadPageImpl;
-import com.hotusm.fastcrawl.fetch.LinkBucket;
+import com.hotusm.fastcrawl.common.container.LinkBucket;
 import com.hotusm.fastcrawl.util.HttpReturnMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,6 +33,7 @@ public class FetchATagTask implements Runnable{
     //失败的 不需要再解析了
     private volatile DiscardData discardData;
 
+    //传进来的a标签（元数据）
     private final ATag aTag;
 
     public FetchATagTask(LinkBucket<ATag> linkBucket,ConcurrentHashMap<ATag,Integer> failCount,PageData pageData,

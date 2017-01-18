@@ -276,7 +276,7 @@ public class HttpUtil {
         int code = resp.getStatusLine().getStatusCode();
         HttpReturnMessage hrm = new HttpReturnMessage(code);
 
-        String content=resp.getResponseBodyAsString();
+        byte[] content=resp.getResponseBody();
         // 关闭流
 
         if (log.isDebugEnabled()) {
@@ -285,7 +285,7 @@ public class HttpUtil {
             log.debug(msg);
         }
 
-        hrm.setResult(content);
+        hrm.setResult(new String(content,"UTF-8"));
         hrm.setUrl(resp.getURI().toString());
         return hrm;
     }

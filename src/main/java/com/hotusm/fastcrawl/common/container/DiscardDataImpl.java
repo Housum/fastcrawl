@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author luqibao
- *  最简答的方式  使用list的方式
+ *  最简单的方式  使用list的方式
  */
 public class DiscardDataImpl implements DiscardData {
 

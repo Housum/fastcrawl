@@ -1,6 +1,7 @@
 package com.hotusm.fastcrawl.fetch;
 
 import com.hotusm.fastcrawl.common.container.DiscardData;
+import com.hotusm.fastcrawl.common.container.LinkBucket;
 import com.hotusm.fastcrawl.common.container.PageData;
 import com.hotusm.fastcrawl.fetch.task.FetchATagTask;
 import org.apache.logging.log4j.LogManager;
