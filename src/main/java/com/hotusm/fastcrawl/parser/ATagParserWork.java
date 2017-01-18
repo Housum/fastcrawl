@@ -3,7 +3,6 @@ package com.hotusm.fastcrawl.parser;
 import com.hotusm.fastcrawl.common.container.LinkBucket;
 import com.hotusm.fastcrawl.fetch.ATag;
 import com.hotusm.fastcrawl.util.HtmlAnalysisUtil;
-import com.hotusm.fastcrawl.util.StreamUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,11 +64,6 @@ public class ATagParserWork implements ParserWork{
                 continue;
             }
             aTag=new ATag(entry.getValue(),validateTag.encodeHref(entry.getKey()));
-            synchronized (ATagParserWork.class){
-                try{
-                    StreamUtil.writeFile(aTag.getName()+"  "+aTag.getHref()+"\r\n","C://aTag.txt",true);
-                }catch (Exception e){}
-            }
             try {
                 linkBucket.push(aTag);
             }catch (Exception e){
