@@ -32,9 +32,9 @@ public class TestParserWork implements ParserWork{
 
     private void printlnTitle(String html){
         Document document= Jsoup.parse(html);
-        Elements elements=document.select(".link_title");
+        Elements elements=document.select("#article_details h1");
         try{
-            FileWriter channel=new FileWriter("c://title.txt",true);
+            FileWriter channel=new FileWriter("c://title_yly.txt",true);
             BufferedWriter bw=new BufferedWriter(channel);
           /*  for(Element element:elements){
                 bw.write(element.text());
@@ -44,6 +44,7 @@ public class TestParserWork implements ParserWork{
             bw.close();
             channel.close();
         }catch (Exception e){
+            //e.printStackTrace();
         }
     }
 

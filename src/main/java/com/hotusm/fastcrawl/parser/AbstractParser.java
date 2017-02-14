@@ -19,11 +19,11 @@ public abstract class AbstractParser implements Parser{
 
     private static final int NCPU=Runtime.getRuntime().availableProcessors();
 
-    //解析的实体的工厂
+    //解析下载好网页中实体的工厂
     private ThreadPoolExecutor parserPool=new ThreadPoolExecutor(NCPU,NCPU+1,30L,
             TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>());
 
-    //解析A标签的工厂
+    //解析网页中A标签的工厂
     private ThreadPoolExecutor tagPool=new ThreadPoolExecutor(NCPU,NCPU+1,30L,
             TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>());
 
@@ -121,18 +121,17 @@ public abstract class AbstractParser implements Parser{
            while (true){
                 try{
                     HttpReturnMessage message= pageData.get();
+                    //继续解析网页中的a标签
+                    tagPool.execute(new ParserNode(aTagParserWork,message.getResult()));
                     if(isMatch(message.getResult())){
                         if(LOGGER.isDebugEnabled()){
                             LOGGER.debug(String.format("满足条件,开始抓取数据,url :%s",message.getUrl()));
                         }
                         pageParserWork.doParser(message.getResult());
                     }
-
                     if(LOGGER.isDebugEnabled()){
                         LOGGER.debug(String.format("开始解析,url :%s",message.getUrl()));
                     }
-                    //继续解析网页中的a标签
-                    tagPool.execute(new ParserNode(aTagParserWork,message.getResult()));
                 }catch (Exception e){
                     e.printStackTrace();
                     Thread.interrupted();

@@ -1,5 +1,7 @@
 package com.hotusm.fastcrawl.parser;
 
+import java.util.Collection;
+
 /**
  * 解析过的数据
  * @author hotusm
@@ -18,5 +20,11 @@ public interface ParsedData {
      * @param obj
      */
     void addData(Object obj);
+
+    /**
+     * 获取所有的数据
+     * @return
+     */
+    Collection<Object> getAll();
 
 }

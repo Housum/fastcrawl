@@ -107,25 +107,33 @@ public class ParserTest {
 */
     public static void main(String[] args) throws Exception{
 
-            final LinkBucket linkBucket= new QueueLinkBucket<ATag>();
-            final PageData pageData=new PageDataImpl();
-            final ParserWork parserWork=new TestParserWork();
-            final ParsedData parsedData=new ATagParsedData();
-            final DiscardData discardData=new DiscardDataImpl();
-            final ValidateTag validateTag=new ValidateATag();
-            final ParserWork aTagParserWork=new ATagParserWork(linkBucket,parsedData,validateTag);
+             //a链接的中央仓库
+             LinkBucket linkBucket= new QueueLinkBucket<ATag>();
+             //下载好的网页,但是没有解析的
+             PageData pageData=new PageDataImpl();
+             // 解析的工作单元
+             ParserWork parserWork=new TestParserWork();
+             // 解析过的中央仓库
+             ParsedData parsedData=new ATagParsedData();
+             //被丢弃的
+             DiscardData discardData=new DiscardDataImpl();
+             //验证标签
+             ValidateTag validateTag=new ValidateATag();
+             //
+             ParserWork aTagParserWork=new ATagParserWork(linkBucket,parsedData,validateTag);
 
-            linkBucket.push(new ATag("博客园","http://blog.csdn.net/yinwenjie"));
-            DelayAndRetryLoad load=new DelayAndRetryLoadImpl(linkBucket,pageData,discardData);
-            load.delayLoad();
+             //存放一个root
+             linkBucket.push(new ATag("CSDN","http://blog.csdn.net/"));
+             DelayAndRetryLoad load=new DelayAndRetryLoadImpl(linkBucket,pageData,discardData);
+             load.delayLoad();
 
-           TestAbstractParser parser= new TestAbstractParser();
+             TestAbstractParser parser= new TestAbstractParser();
 
-           parser.setaTagParserWork(aTagParserWork);
-           parser.setPageData(pageData);
-           parser.setPageParserWork(parserWork);
+             parser.setaTagParserWork(aTagParserWork);
+             parser.setPageData(pageData);
+             parser.setPageParserWork(parserWork);
 
-           parser.load();
+             parser.load();
 
             synchronized (ParserTest.class){
             try{

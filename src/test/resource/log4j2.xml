@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="WARN">
+    <properties>
+        <!-- 日志文件目录 -->
+        <property name="LOG_HOME">C:/data/logs</property>
+        <!-- 日志文件名 -->
+        <property name="LOG_NAME_BIZ">crawl-biz</property>
+        <property name="LOG_NAME_ERROR">crawl-error</property>
+        <!-- 日志打印格式 -->
+        <Property name="patternStyle">%d{HH:mm:ss.SSS} %-5level %class{36}.%M:%L - %msg%xEx%n</Property>
+    </properties>
+
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${patternStyle}"/>
+        </Console>
+
+        <RollingFile name="BizFile" fileName="${LOG_HOME}/${LOG_NAME_BIZ}.log"
+                     filePattern="${LOG_HOME}/${LOG_NAME_BIZ}-%d{yyyyMMdd}.log">
+            <PatternLayout pattern="${patternStyle}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="ExceptionFile" fileName="${LOG_HOME}/${LOG_NAME_ERROR}.log"
+                     filePattern="${LOG_HOME}/${LOG_NAME_ERROR}-%d{yyyyMMdd}.log">
+            <ThresholdFilter level="error"/>
+            <PatternLayout pattern="${patternStyle}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <logger name="com.hotusm" level="DEBUG" ></logger>
+        <root level="DEBUG" includeLocation="true">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="BizFile"/>
+            <appender-ref ref="ExceptionFile"/>
+        </root>
+    </loggers>
+</configuration>

@@ -2,6 +2,7 @@
 package com.hotusm.fastcrawl.parser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,5 +19,9 @@ public class ATagParsedData implements ParsedData{
 
     public  void addData(Object tag) {
             list.add(tag);
+    }
+
+    public Collection<Object> getAll(){
+        return list;
     }
 }

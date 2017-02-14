@@ -10,6 +10,8 @@ public class TestAbstractParser extends AbstractParser{
 
     @Override
     public boolean isMatch(String html) {
+
+       // return true;
         Document document= Jsoup.parse(html);
         return document.select("#article_details")!=null;
     }

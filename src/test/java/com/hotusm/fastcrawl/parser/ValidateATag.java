@@ -25,7 +25,11 @@ public class ValidateATag implements ValidateTag{
     private static final List<String>  SUFFIX=new ArrayList<String>(Arrays.asList(ConfigUtil.getValue("suffix.exclude").split(",")));
 
     public boolean validate(String url) {
-        if(!url.contains(SECOND_DOMAIN)){
+/*        if(!url.contains(SECOND_DOMAIN)){
+            return false;
+        }*/
+
+        if(!url.contains(FIRST_DOMAIN)){
             return false;
         }
         return true;
