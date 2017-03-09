@@ -18,17 +18,23 @@ public class StartUpTest {
     private final static int PORT=8080;
 
     public static void main(String[] args) throws Exception{
+        startUp("https://book.douban.com/","读书");
+    }
 
+    public static  void startUp(String url,String name) throws Exception{
         //这部分启动爬虫
         LinkBucket linkBucket= new QueueLinkBucket<ATag>();
         PageData pageData=new PageDataImpl();
-        ParserWork parserWork=new TestParserWork();
+
         ParsedData parsedData=new ATagParsedData();
         DiscardData discardData=new DiscardDataImpl();
         ValidateTag validateTag=new ValidateATag();
+        SuccessPage successPage=new SuccessPageImpl();
+        ParserWork parserWork=new TestParserWork(successPage);
+
         ParserWork aTagParserWork=new ATagParserWork(linkBucket,parsedData,validateTag);
 
-        linkBucket.push(new ATag("CSDN","http://blog.csdn.net/"));
+        linkBucket.push(new ATag(name,url));
         DelayAndRetryLoad load=new DelayAndRetryLoadImpl(linkBucket,pageData,discardData);
         load.delayLoad();
 
@@ -52,7 +58,7 @@ public class StartUpTest {
         server.addConnector(http);
 
         ServletContextHandler servlets=new ServletContextHandler();
-        ServletHolder holder=new ServletHolder(new TestHttpServlet(discardData,parsedData));
+        ServletHolder holder=new ServletHolder(new TestHttpServlet(discardData,parsedData,successPage));
         servlets.addServlet(holder,"/show");
         server.setHandler(servlets);
 

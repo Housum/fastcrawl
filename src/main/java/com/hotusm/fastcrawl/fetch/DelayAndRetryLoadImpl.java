@@ -21,15 +21,17 @@ public class DelayAndRetryLoadImpl implements DelayAndRetryLoad{
     private static final Logger LOGGER= LogManager.getLogger(DelayAndRetryLoadImpl.class);
     private static final int NCPU=Runtime.getRuntime().availableProcessors();
 
-    //TODO 这里的丢弃策略需要修改
     private ThreadPoolExecutor threadPoolExecutor=new ThreadPoolExecutor(2*NCPU,2*NCPU+1,20L, TimeUnit.DAYS.SECONDS,new LinkedBlockingQueue<Runnable>());
     //储存解析的标签的
     private LinkBucket<ATag> linkBucket;
+
     //记录某一个标签失败的次数 如果超过一定的次数的话  那么就做其他的处理
     private ConcurrentHashMap<ATag,Integer> failCount=new ConcurrentHashMap<ATag, Integer>();
-    //这是解析的整个结果
+
+    //这是下载好的网页
     private volatile PageData pageData;
-    //错误次数达到了一定的次数 保存的数据
+
+    //保存有问题的URL  留作后期处理
     private volatile DiscardData discardData;
 
     public DelayAndRetryLoadImpl(LinkBucket<ATag> linkBucket,PageData pageData,DiscardData discardData){

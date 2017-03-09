@@ -4,6 +4,8 @@ import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,6 +49,7 @@ public class HttpUtil {
         return clientBuilder;
     }
 
+
     /**
      * 从pool中获取一个HttpClient对象来执行Get/Post/Delete/Put等方法
      *
@@ -54,9 +57,12 @@ public class HttpUtil {
      * @throws Exception
      */
     private static HttpClient getClient() throws Exception {
+
         // 实例化客户端
         return new HttpClient(getHttpConnectionManager());
     }
+
+
 
     /**
      * 发送Get请求，参数默认
@@ -131,9 +137,14 @@ public class HttpUtil {
             log.debug(msg);
         }
 
+        GetMethod method=null;
         // 构建Url
         URI uri=new URI(httpUrl,"UTF-8");
-        GetMethod method=new GetMethod();
+        if(httpUrl.startsWith("https")){
+            Protocol myhttps = new Protocol("https", new SSLProtocolSocketFactory(), 443);
+            Protocol.registerProtocol("https", myhttps);
+        }
+        method=new GetMethod();
         method.setURI(uri);
 
         // 设置请求参数
@@ -291,7 +302,9 @@ public class HttpUtil {
     }
 
     public static String buildCookie(){
-        return "bid=9y1bUpDz-2k; gr_user_id=b4c4582f-75c7-449b-bccc-461762a143da; ll='108288'; _ga=GA1.2.177459142.1479353158; ct=y; viewed='10750155_1767741_4941558_26871656_3118650_1881032_5325731_1217156_1833287_1043008'; _pk_ref.100001.3ac3=%5B%22%22%2C%22%22%2C1479447406%2C%22https%3A%2F%2Fwww.douban.com%2F%22%5D; ap=1; __utmt=1; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03=e003e2cb-8f2c-4a8a-b98e-8be75672ad0d; gr_cs1_e003e2cb-8f2c-4a8a-b98e-8be75672ad0d=user_id%3A0; _pk_id.100001.3ac3=bc0cbf569ff6215a.1479353158.16.1479452671.1479444186.; _pk_ses.100001.3ac3=*; __utmt_douban=1; __utma=30149280.177459142.1479353158.1479447406.1479452668.17; __utmb=30149280.2.10.1479452668; __utmc=30149280; __utmz=30149280.1479452668.17.5.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; __utma=81379588.893501403.1479353158.1479444186.1479447406.16; __utmb=81379588.21.10.1479447406; __utmc=81379588; __utmz=81379588.1479436562.14.5.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/; _vwo_uuid_v2=FCFCADC78AA1CB7A484DFC18CB40AC1E|5e669b2d269df13d5ffc743101311287";
+        //return "bid=fQO07KBnyQc; gr_user_id=7f52d6de-7877-4f9a-a85e-1195e4033283; viewed=\"4251875_1239558_3376642_26176870\"; _pk_ref.100001.3ac3=%5B%22%22%2C%22%22%2C1489029665%2C%22https%3A%2F%2Fwww.google.at%2F%22%5D; ps=y; gr_cs1_8e89f4ee-f60a-48f3-b735-a0b7706f6a22=user_id%3A0; ll=\"108288\"; dbcl2=\"158824779:90KjAnKNXic\"; ck=bFs4; __utmt_douban=1; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03=bd6f5ed4-1f32-4353-8eaa-17b368d0737d; gr_cs1_bd6f5ed4-1f32-4353-8eaa-17b368d0737d=user_id%3A1; _pk_id.100001.3ac3=ce7775d14e4b6109.1487674425.5.1489033164.1488958978.; _pk_ses.100001.3ac3=*; __utma=30149280.169797740.1487303477.1488958979.1489029668.10; __utmb=30149280.18.5.1489031278519; __utmc=30149280; __utmz=30149280.1488958979.9.8.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); __utmt=1; __utma=81379588.1031180968.1487674426.1488958979.1489029668.5; __utmb=81379588.10.10.1489029668; __utmc=81379588; __utmz=81379588.1488958979.4.3.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); _vwo_uuid_v2=401FAE66B5B2E3F754BC2EA7BFE323C9|147cfe1cbddbf5c0c48f8c25e2082cf4; push_noty_num=0; push_doumail_num=0";
+
+        return "user-key=41b72461-7a09-49c7-9ada-1a298af13a26; o2-webp=true; ipLoc-djd=21-1827-3504-51731.138175816; cn=7; userInfo2016=1; dmpjs=dmp-d110769bd1929d9d4efa5b7e46d3166ebdd4fb7; TrackID=15M6KpVvebHpyN_y9IM20FGpRoUyKo94tJNNbmrgOKTk196RP03xSofFjY9UX5fl94PxSt2BMAiVNKyUYAhjQFEG4fBlJtWVctiRPmSkh2e0; pinId=2mbmgePZ7CvAwpbPLiM22g; pin=Hotsumadobeunm; unick=Hotsumadobeunm; _tp=Ic1N1sLjstOzcmYrnPPu%2Fw%3D%3D; _pst=Hotsumadobeunm; ceshi3.com=000; unpl=V2_ZzNtbRAHFBclD0MALhwMAWJTFVpKVBcWdVhGV3gZWlFvABQPclRCFXMUR1ZnGFQUZwEZWEdcQBRFCEdkex1dAWMzIm1BV3McRQwWB30YCVEzB0ZVS1MRQCZcQgR9HV4BYAcSXxEFQBV1OHZTSxlcDWIAFlRHZ5qVwt7kxqKH1tDvlCJaR1BFEnwLQWR6KV01NW3K6%2fSP5qRp3OzbrpHLSGNTQVtDAhdBcVxOXX9LCVYzB0JbRlVHEnEIRAcpGlwFVwIiXg%3d%3d; __jdv=122270672|book.douban.com|t_15055_|tuiguang|caf3a64ed4a54a6692e21a12217e927c|1489038265910; ipLocation=%u6C5F%u897F; areaId=21; __jda=122270672.5ab70dee5e985cdbe5a75356513bc211.1487209292.1488508409.1489038266.19; __jdb=122270672.22.5ab70dee5e985cdbe5a75356513bc211|19.1489038266; __jdc=122270672; __jdu=5ab70dee5e985cdbe5a75356513bc211";
     }
 
 /*    private static List<NameValuePair> getNameValuePairList(Map<String, String> params) {

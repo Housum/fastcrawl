@@ -79,4 +79,15 @@ public class HttpClientTest {
         System.out.print(s);
     }
 
+    @Test
+    public void testSSLClient(){
+        try{
+           HttpReturnMessage message=HttpUtil.doGet("https://www.douban.com/group/topic/79358744/?cid=984437273");
+           System.out.println(message.getResult());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 }

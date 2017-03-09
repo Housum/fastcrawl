@@ -122,12 +122,12 @@ public abstract class AbstractParser implements Parser{
                 try{
                     HttpReturnMessage message= pageData.get();
                     //继续解析网页中的a标签
-                    tagPool.execute(new ParserNode(aTagParserWork,message.getResult()));
+                    tagPool.execute(new ParserNode(aTagParserWork,new HtmlContext(message.getResult(),message.getUrl())));
                     if(isMatch(message.getResult())){
                         if(LOGGER.isDebugEnabled()){
                             LOGGER.debug(String.format("满足条件,开始抓取数据,url :%s",message.getUrl()));
                         }
-                        pageParserWork.doParser(message.getResult());
+                        pageParserWork.doParser(new HtmlContext(message.getResult(),message.getUrl()));
                     }
                     if(LOGGER.isDebugEnabled()){
                         LOGGER.debug(String.format("开始解析,url :%s",message.getUrl()));
@@ -145,15 +145,15 @@ public abstract class AbstractParser implements Parser{
 
         private volatile ParserWork parserWork;
 
-        private final String html;
+        private final HtmlContext context;
 
-        public ParserNode(ParserWork parserWork, String html) {
+        public ParserNode(ParserWork parserWork, HtmlContext context) {
             this.parserWork = parserWork;
-            this.html = html;
+            this.context=context;
         }
 
         public void run() {
-            parserWork.doParser(html);
+            parserWork.doParser(context);
         }
     }
 }

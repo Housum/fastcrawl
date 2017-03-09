@@ -15,5 +15,5 @@ public interface ParserWork {
      * 如果是用户自定义储存的话 可以返回null
      * @return
      */
-    Map<Object,Object> doParser(String html);
+    Map<Object,Object> doParser(HtmlContext htmlContext);
 }

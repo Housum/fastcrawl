@@ -19,7 +19,7 @@ public class ValidateATag implements ValidateTag{
     private static final Logger LOGGER= LogManager.getLogger(ValidateATag.class);
 
     private static final String FIRST_DOMAIN=ConfigUtil.getValue("first.domain");
-    private static final String SECOND_DOMAIN=ConfigUtil.getValue("second.domain");
+    //private static final String SECOND_DOMAIN=ConfigUtil.getValue("second.domain");
 
 
     private static final List<String>  SUFFIX=new ArrayList<String>(Arrays.asList(ConfigUtil.getValue("suffix.exclude").split(",")));
@@ -48,8 +48,7 @@ public class ValidateATag implements ValidateTag{
         }
         String host= ConfigUtil.getValue("host");
         if(url.startsWith("https")){
-            /*url= url.replaceFirst("https","http");*/
-            return "";
+            return url;
         }
         if(url.startsWith("//")){
             url=url.replaceFirst("//","");
@@ -61,7 +60,7 @@ public class ValidateATag implements ValidateTag{
             url= "http://"+url;
         }
         if(url.startsWith(host)){
-            url= url.replaceFirst(host,SECOND_DOMAIN);
+            url= url.replaceFirst(host,FIRST_DOMAIN);
         }
         if(!url.startsWith("http")){
             url= FIRST_DOMAIN+url;

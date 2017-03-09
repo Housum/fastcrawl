@@ -1,10 +1,5 @@
 package com.hotusm.fastcrawl.parser;
 
-import com.hotusm.fastcrawl.common.container.*;
-import com.hotusm.fastcrawl.fetch.ATag;
-import com.hotusm.fastcrawl.fetch.DelayAndRetryLoad;
-import com.hotusm.fastcrawl.fetch.DelayAndRetryLoadImpl;
-
 /**
  */
 public class ParserTest {
@@ -107,41 +102,41 @@ public class ParserTest {
 */
     public static void main(String[] args) throws Exception{
 
-             //a链接的中央仓库
-             LinkBucket linkBucket= new QueueLinkBucket<ATag>();
-             //下载好的网页,但是没有解析的
-             PageData pageData=new PageDataImpl();
-             // 解析的工作单元
-             ParserWork parserWork=new TestParserWork();
-             // 解析过的中央仓库
-             ParsedData parsedData=new ATagParsedData();
-             //被丢弃的
-             DiscardData discardData=new DiscardDataImpl();
-             //验证标签
-             ValidateTag validateTag=new ValidateATag();
-             //
-             ParserWork aTagParserWork=new ATagParserWork(linkBucket,parsedData,validateTag);
-
-             //存放一个root
-             linkBucket.push(new ATag("CSDN","http://blog.csdn.net/"));
-             DelayAndRetryLoad load=new DelayAndRetryLoadImpl(linkBucket,pageData,discardData);
-             load.delayLoad();
-
-             TestAbstractParser parser= new TestAbstractParser();
-
-             parser.setaTagParserWork(aTagParserWork);
-             parser.setPageData(pageData);
-             parser.setPageParserWork(parserWork);
-
-             parser.load();
-
-            synchronized (ParserTest.class){
-            try{
-                ParserWork.class.wait();
-            }catch (Exception e){
-
-            }
-            }
+//             //a链接的中央仓库
+//             LinkBucket linkBucket= new QueueLinkBucket<ATag>();
+//             //下载好的网页,但是没有解析的
+//             PageData pageData=new PageDataImpl();
+//             // 解析的工作单元
+//             ParserWork parserWork=new TestParserWork();
+//             // 解析过的中央仓库
+//             ParsedData parsedData=new ATagParsedData();
+//             //被丢弃的
+//             DiscardData discardData=new DiscardDataImpl();
+//             //验证标签
+//             ValidateTag validateTag=new ValidateATag();
+//             //
+//             ParserWork aTagParserWork=new ATagParserWork(linkBucket,parsedData,validateTag);
+//
+//             //存放一个root
+//             linkBucket.push(new ATag("BLOGS","http://www.cnblogs.com/"));
+//             DelayAndRetryLoad load=new DelayAndRetryLoadImpl(linkBucket,pageData,discardData);
+//             load.delayLoad();
+//
+//             TestAbstractParser parser= new TestAbstractParser();
+//
+//             parser.setaTagParserWork(aTagParserWork);
+//             parser.setPageData(pageData);
+//             parser.setPageParserWork(parserWork);
+//
+//             parser.load();
+//
+//            synchronized (ParserTest.class){
+//            try{
+//                ParserWork.class.wait();
+//            }catch (Exception e){
+//
+//            }
+//            }
     }
 
 }

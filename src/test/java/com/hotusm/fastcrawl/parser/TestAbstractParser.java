@@ -13,6 +13,6 @@ public class TestAbstractParser extends AbstractParser{
 
        // return true;
         Document document= Jsoup.parse(html);
-        return document.select("#article_details")!=null;
+        return document.select(".vcard-names > .vcard-fullname")!=null;
     }
 }

@@ -7,8 +7,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,30 +20,43 @@ public class TestParserWork implements ParserWork{
 
     private AtomicInteger atomicInteger=new AtomicInteger(0);
 
-    public Map<Object, Object> doParser(String html) {
+    private SuccessPage successPage;
+
+    public TestParserWork(SuccessPage successPage){
+        this.successPage=successPage;
+    }
+
+
+    public Map<Object, Object> doParser(HtmlContext context) {
        // LOGGER.info(atomicInteger.incrementAndGet());
         //writeHtml(html);
         // writeHtml(html, UUID.randomUUID().toString(),"C://tomcat//");
-        printlnTitle(html);
+        printlnTitle(context);
         return null;
     }
 
-    private void printlnTitle(String html){
-        Document document= Jsoup.parse(html);
-        Elements elements=document.select("#article_details h1");
-        try{
-            FileWriter channel=new FileWriter("c://title_yly.txt",true);
-            BufferedWriter bw=new BufferedWriter(channel);
-          /*  for(Element element:elements){
-                bw.write(element.text());
-                bw.newLine();
-            }*/
-            bw.write(elements.get(0).text()+"\r\n");
-            bw.close();
-            channel.close();
-        }catch (Exception e){
-            //e.printStackTrace();
+    private void printlnTitle(HtmlContext context){
+        Document document= Jsoup.parse(context.getHtml());
+        Elements elements=document.select(".vcard-names > .vcard-fullname");
+
+        if(elements!=null&&elements.size()>0){
+            synchronized (successPage){
+                if(elements.get(0)!=null){
+                    successPage.add(context.getUrl(),elements.get(0).text());
+                }
+            }
         }
+
+
+//        try{
+//            FileWriter channel=new FileWriter("c://title_yly.txt",true);
+//            BufferedWriter bw=new BufferedWriter(channel);
+//            bw.write(elements.get(0).text()+"\r\n");
+//            bw.close();
+//            channel.close();
+//        }catch (Exception e){
+//            //e.printStackTrace();
+//        }
     }
 
     /**

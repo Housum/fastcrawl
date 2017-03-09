@@ -36,8 +36,8 @@ public class ATagParserWork implements ParserWork{
         this.validateTag=validateTag;
 
     }
-    public Map<Object, Object> doParser(String html) {
-        Map<String,String> tags= HtmlAnalysisUtil.selectAttrAndText(TAG,ATTR,html);
+    public Map<Object, Object> doParser(HtmlContext htmlContext) {
+        Map<String,String> tags= HtmlAnalysisUtil.selectAttrAndText(TAG,ATTR,htmlContext.getHtml());
         if(tags==null){
             return null;
         }
