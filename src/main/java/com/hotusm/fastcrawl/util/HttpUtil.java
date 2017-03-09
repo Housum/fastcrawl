@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 
 /**
  * httpClient工具类<br>
- * 该工具类目前仅支持Http请求，Https请求请走其他工具类
+ * 该工具类目前仅支持Http请求
  */
 public class HttpUtil {
 
